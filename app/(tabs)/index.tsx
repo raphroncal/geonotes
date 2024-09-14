@@ -12,8 +12,6 @@ export default function Index() {
     };
 
     const user = getAuth(app).currentUser;
-    console.log("signed in!");
-    console.log(user);
 
     return (
         <View className="flex justify-center items-center">
