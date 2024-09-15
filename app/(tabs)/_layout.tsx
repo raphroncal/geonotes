@@ -5,7 +5,6 @@ import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 
 export default function RootLayout() {
     const user = getAuth(app).currentUser;
-    console.log(user);
 
     if (!user) {
         return <Redirect href="/sign-in" />;

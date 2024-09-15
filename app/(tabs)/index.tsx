@@ -1,4 +1,5 @@
 import app from "@/firebaseConfig";
+import Constants from "expo-constants";
 import { getAuth } from "firebase/auth";
 import { Button, Text, View } from "react-native";
 
@@ -14,7 +15,10 @@ export default function Index() {
     const user = getAuth(app).currentUser;
 
     return (
-        <View className="flex justify-center items-center">
+        <View
+            style={{ marginTop: Constants.statusBarHeight }}
+            className="flex justify-center items-center py-2"
+        >
             <Button
                 onPress={() => {
                     signOut();
