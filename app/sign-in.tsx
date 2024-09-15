@@ -25,9 +25,9 @@ export default function SignIn() {
             style={{ marginTop: Constants.statusBarHeight }}
             className="flex-1 py-5 px-10 space-y-5"
         >
-            <View>
-                <Text className="text-white text-center font-bold text-3xl mb-6">
-                    Geonotes
+            <View className="my-6">
+                <Text className="text-white text-center font-bold text-3xl">
+                    Welcome back!
                 </Text>
             </View>
             <View className="space-y-3">
@@ -41,6 +41,7 @@ export default function SignIn() {
                 <TextInput
                     placeholder="Password"
                     textContentType="password"
+                    secureTextEntry={true}
                     autoCapitalize="none"
                     className="placeholder:text-slate-50 bg-white text-black h-10 px-3 rounded-sm mb-10"
                     onChangeText={setPassword}

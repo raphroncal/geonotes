@@ -1,11 +1,11 @@
-import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { Image } from "expo-image";
 
 type CardProps = {
     title: string;
     date: Date;
     body?: string;
-    image?: string;
+    image?: any;
 };
 
 const Card: React.FC<CardProps> = ({ title, body, image, date }) => {
@@ -22,30 +22,30 @@ const Card: React.FC<CardProps> = ({ title, body, image, date }) => {
 
     return (
         <View
-            className="bg-geonote-orange w-1/2 h-min max-h-[33%] rounded-3xl pb-5 flex justify-between"
+            className="bg-geonote-orange min-w-[50%] max-h-[33%] rounded-3xl mb-2"
             onStartShouldSetResponder={(e) => true}
             onTouchEnd={(e) => {
                 e.stopPropagation();
             }}
         >
-            <View className="space-y-3">
+            {/* Image Header */}
+            {image ? (
                 <Image
-                    className={
-                        image
-                            ? "w-full h-full max-h-[40%] rounded-t-3xl"
-                            : "pt-2"
-                    }
-                    source={
-                        image
-                            ? require("../assets/images/moo-deng.jpg")
-                            : undefined
-                    }
+                    className="flex-1 h-28 rounded-t-3xl resize"
+                    source={image}
                 ></Image>
-                {/* title */}
+            ) : undefined}
+            {/* <Image
+                className={image ? "h-full max-h-[40%] rounded-t-3xl" : ""}
+                source={image ? image : undefined}
+            ></Image> */}
+            <View className="space-y-3 py-5">
+                {/* Title */}
                 <View className="flex flex-row justify-between items-center px-5">
                     <Text className="text-xl text-white font-bold">
                         {title}
                     </Text>
+
                     <TouchableOpacity
                         onPress={() => {
                             console.log("edit");
@@ -53,11 +53,12 @@ const Card: React.FC<CardProps> = ({ title, body, image, date }) => {
                     >
                         <Image
                             className="w-5 h-5"
-                            source={require("../assets/images/close.png")}
+                            source={require("../assets/images/edit.png")}
                         ></Image>
                     </TouchableOpacity>
                 </View>
-                {/* body */}
+
+                {/* Content */}
                 <Text className="text-gray-300 px-5">
                     {body ? body : "No text"}
                 </Text>
