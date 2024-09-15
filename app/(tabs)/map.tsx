@@ -1,9 +1,10 @@
 import Card from "@/components/Card";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { MapMarker, Marker, Region } from "react-native-maps";
 
 export default function Map() {
+    const mapRef = useRef<MapView>(null);
     const [isModalOpen, setModalOpen] = useState(false);
     const [mapRegion, setMapRegion] = useState({
         latitude: 14.540635977344408,
@@ -12,6 +13,11 @@ export default function Map() {
         longitudeDelta: 0.05,
     });
     const date = new Date();
+    const addNote = (e: any) => {
+        console.log("i'm in");
+        console.log(e.nativeEvent.coordinate.latitude);
+        console.log(e.nativeEvent.coordinate.longitude);
+    };
 
     return (
         <View>
@@ -25,9 +31,14 @@ export default function Map() {
                     <Card title="Title" date={date} />
                 </TouchableOpacity>
             ) : undefined}
-            <MapView region={mapRegion} className="relative w-full h-full">
+            <MapView
+                region={mapRegion}
+                ref={mapRef}
+                onPress={addNote}
+                className="relative w-full h-full"
+            >
                 <Marker
-                    className="static"
+                    // className="static"
                     coordinate={mapRegion}
                     onPress={() => {
                         setModalOpen(true);
