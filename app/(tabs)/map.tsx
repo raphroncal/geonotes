@@ -1,8 +1,7 @@
-import { Link } from "expo-router";
+import Card from "@/components/Card";
 import { useState } from "react";
-import { View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import Modal from "./modal";
 
 export default function Map() {
     const [isModalOpen, setModalOpen] = useState(false);
@@ -12,12 +11,23 @@ export default function Map() {
         latitudeDelta: 0.04,
         longitudeDelta: 0.05,
     });
+    const date = new Date();
 
     return (
         <View>
-            {isModalOpen ? <Modal /> : undefined}
-            <MapView region={mapRegion} className="w-full h-full">
+            {isModalOpen ? (
+                <TouchableOpacity
+                    className="z-10 absolute inset-x-0 inset-y-0 justify-center items-center bg-black/70"
+                    onPress={() => {
+                        setModalOpen(false);
+                    }}
+                >
+                    <Card title="Title" date={date} />
+                </TouchableOpacity>
+            ) : undefined}
+            <MapView region={mapRegion} className="relative w-full h-full">
                 <Marker
+                    className="static"
                     coordinate={mapRegion}
                     onPress={() => {
                         setModalOpen(true);
