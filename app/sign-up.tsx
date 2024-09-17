@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Alert, View, TextInput, Text } from "react-native";
-import { Link } from "expo-router";
+import { router } from "expo-router";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import app from "@/firebaseConfig";
 import Constants from "expo-constants";
@@ -56,9 +56,14 @@ export default function SignUp() {
                     onPress={signUp}
                 />
 
-                <Link href="/sign-in" className="text-geonote-orange">
+                <Text
+                    className="text-geonote-orange"
+                    onPress={() => {
+                        router.dismiss();
+                    }}
+                >
                     Already have an account?
-                </Link>
+                </Text>
             </View>
         </View>
     );

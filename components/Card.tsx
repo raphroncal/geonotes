@@ -1,34 +1,34 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { Alert, Text, TouchableOpacity, View } from "react-native";
 import { Image } from "expo-image";
-import { useState } from "react";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { NoteProps } from "@/app/notes/[note]";
 
-export type CardProps = {
-    title: string;
-    date: Date;
-    body?: string;
-    image?: any;
+type CardProps = {
+    id: string;
 };
 
-export const formatDate = (d: Date) => {
-    if (new Date().getDate() == d.getDate()) {
-        return d.toLocaleTimeString("en-US", {
-            hour: "2-digit",
-            minute: "2-digit",
-        });
-    }
+const Card: React.FC<CardProps> = ({ id }) => {
+    const getNote = async (id: string) => {
+        try {
+            let jsonString = await AsyncStorage.getItem(id);
+            let jsonValue: NoteProps =
+                jsonString != null ? JSON.parse(jsonString) : null;
+            return jsonValue;
+        } catch (e) {
+            Alert.alert("Failed to load note. Please try again later.");
+            router.dismiss();
+        }
+    };
 
-    return d.getDate();
-};
-
-const Card: React.FC<CardProps> = ({ title, body, image, date }) => {
+    let note = getNote(id);
+    console.log(note);
     return (
         <Link
             href={{
                 pathname: "/notes/[note]",
                 params: {
-                    note: "test", // card_id
+                    note: id,
                 },
             }}
             onPress={(e) => {
@@ -38,14 +38,12 @@ const Card: React.FC<CardProps> = ({ title, body, image, date }) => {
             asChild
         >
             <TouchableOpacity
-                className="bg-geonote-orange min-w-[50%] max-h-[33%] rounded-3xl space-y-3 py-5 mb-2"
+                className="bg-geonote-orange min-w-[50%] rounded-3xl space-y-3 py-5 mb-2"
                 activeOpacity={0.7}
             >
                 {/* Title */}
                 <View className="flex flex-row justify-between items-center px-5">
-                    <Text className="text-xl text-white font-bold">
-                        {title}
-                    </Text>
+                    <Text className="text-xl text-white font-bold">{}</Text>
 
                     <TouchableOpacity
                         onPress={() => {
@@ -60,13 +58,11 @@ const Card: React.FC<CardProps> = ({ title, body, image, date }) => {
                 </View>
 
                 {/* Content */}
-                <View className="">
-                    <Text className="text-gray-300 px-5">
-                        {body ? body : "No text"}
-                    </Text>
-                </View>
+                <Text className="text-gray-300 px-5">
+                    {/* {id.body ? id.body : "No text"} */}
+                </Text>
                 <Text className="px-5 text-gray-300 italic">
-                    {formatDate(date)}
+                    {/* {id.date ? formatDate(id.date) : undefined} */}
                 </Text>
             </TouchableOpacity>
         </Link>

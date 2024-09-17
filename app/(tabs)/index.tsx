@@ -2,8 +2,36 @@ import { ScrollView, Text, View } from "react-native";
 import Constants from "expo-constants";
 import { getAuth } from "firebase/auth";
 import Card from "@/components/Card";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect } from "react";
 
-export default function Index() {
+type IndexProps = {
+    notes: string[];
+    setNotes: (value: string[]) => void;
+};
+
+const Index: React.FC<IndexProps> = ({ notes, setNotes }) => {
+    // const { notes, setNotes } = route.params;
+
+    useEffect(() => {
+        async () => {
+            try {
+                const keys = await AsyncStorage.getAllKeys();
+                // const tempKeys = await AsyncStorage.multiGet(keys);
+                let newKeys: string[] = [];
+                for (let i in keys) {
+                    newKeys[i] = keys[i];
+                }
+                setNotes(newKeys);
+            } catch (error) {
+                console.log(
+                    error,
+                    "Unable to retrieve notes. Please try again."
+                );
+            }
+        };
+    }, notes);
+
     const signOut = async () => {
         try {
             await getAuth().signOut();
@@ -31,43 +59,14 @@ export default function Index() {
             </View>
             {/* Content */}
             <ScrollView showsVerticalScrollIndicator={false} className="h-min">
-                <Card title="Test" date={new Date()}></Card>
-                <Card
-                    title="Test"
-                    date={new Date()}
-                    body="I am testing my notes hehehehehehehehehehehehehehehe"
-                ></Card>
-                <Card
-                    title="Test"
-                    date={new Date()}
-                    body="This as Pochita fr fr"
-                    image={require("@/assets/images/moo-deng.jpg")}
-                ></Card>
-                <Card
-                    title="Test"
-                    date={new Date()}
-                    body="This as Pochita fr fr"
-                    image={require("@/assets/images/moo-deng.jpg")}
-                ></Card>
-                <Card
-                    title="Test"
-                    date={new Date()}
-                    body="This as Pochita fr fr"
-                    image={require("@/assets/images/moo-deng.jpg")}
-                ></Card>
-                <Card
-                    title="Test"
-                    date={new Date()}
-                    body="This as Pochita fr fr"
-                    image={require("@/assets/images/moo-deng.jpg")}
-                ></Card>
-                <Card
-                    title="Test"
-                    date={new Date()}
-                    body="This as Pochita fr fr"
-                    image={require("@/assets/images/moo-deng.jpg")}
-                ></Card>
+                {notes
+                    ? notes.map((id: string) => {
+                          return <Card id={id}></Card>;
+                      })
+                    : undefined}
             </ScrollView>
         </View>
     );
-}
+};
+
+export default Index;

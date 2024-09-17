@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import Card from "@/components/Card";
+import { Note } from "./_layout";
 
 export default function Map() {
     const mapRef = useRef<MapView>(null);
@@ -19,6 +20,14 @@ export default function Map() {
         console.log(e.nativeEvent.coordinate.longitude);
     };
 
+    let testData: Note = {};
+    testData["test"] = {
+        title: "Note Title",
+        date: new Date(),
+        body: "test body",
+    };
+    let testKeys = Object.keys(testData)[0];
+
     return (
         <View>
             {isModalOpen ? (
@@ -28,7 +37,9 @@ export default function Map() {
                         setModalOpen(false);
                     }}
                 >
-                    <Card title="Title" date={date} />
+                    <View className="w-2/3">
+                        <Card id={testKeys} />
+                    </View>
                 </TouchableOpacity>
             ) : undefined}
             <MapView
@@ -38,7 +49,6 @@ export default function Map() {
                 className="relative w-full h-full"
             >
                 <Marker
-                    // className="static"
                     coordinate={mapRegion}
                     onPress={() => {
                         setModalOpen(true);

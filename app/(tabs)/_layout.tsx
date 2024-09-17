@@ -2,8 +2,15 @@ import { Redirect, Tabs } from "expo-router";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { getAuth } from "firebase/auth";
 import app from "@/firebaseConfig";
+import { useState } from "react";
+import { NoteProps } from "../notes/[note]";
 
-export default function RootLayout() {
+export type Note = {
+    [id: string]: NoteProps;
+};
+
+export default function Layout() {
+    const [notes, setNotes] = useState<Note>();
     const user = getAuth(app).currentUser;
 
     if (!user) {
@@ -14,6 +21,7 @@ export default function RootLayout() {
         <Tabs>
             <Tabs.Screen
                 name="index"
+                initialParams={{ notes, setNotes }}
                 options={{
                     title: "Notes",
                     tabBarActiveTintColor: "#AF5427",
@@ -28,6 +36,7 @@ export default function RootLayout() {
             />
             <Tabs.Screen
                 name="map"
+                initialParams={{ notes, setNotes }}
                 options={{
                     title: "Map View",
                     tabBarActiveTintColor: "#AF5427",
