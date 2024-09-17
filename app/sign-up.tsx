@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Alert, View, TextInput, Text } from "react-native";
-import app from "@/firebaseConfig";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { Link } from "expo-router";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import app from "@/firebaseConfig";
 import Constants from "expo-constants";
 import GeoButton from "@/components/GeoButton";
 
@@ -14,10 +14,8 @@ export default function SignUp() {
         const auth = getAuth(app);
         try {
             await createUserWithEmailAndPassword(auth, email, password);
-
-            Alert.alert("Success");
         } catch (error) {
-            Alert.alert("error");
+            Alert.alert("Registration failed. Please try again later.");
         }
     };
 
@@ -26,11 +24,14 @@ export default function SignUp() {
             style={{ marginTop: Constants.statusBarHeight }}
             className="flex-1 py-5 px-10 space-y-5"
         >
+            {/* Header */}
             <View className="my-6">
                 <Text className="text-white text-center font-bold text-3xl">
                     Glad to have you here!
                 </Text>
             </View>
+
+            {/* Form */}
             <View className="space-y-3">
                 <TextInput
                     placeholder="Email"

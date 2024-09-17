@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Alert, View, TextInput, Text } from "react-native";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { Link, router } from "expo-router";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import app from "@/firebaseConfig";
 import Constants from "expo-constants";
 import GeoButton from "@/components/GeoButton";
@@ -16,7 +16,7 @@ export default function SignIn() {
             await signInWithEmailAndPassword(auth, email, password);
             router.replace("/");
         } catch (error) {
-            Alert.alert("error");
+            Alert.alert("Sign in failed. Check your email or password.");
         }
     };
 
@@ -25,11 +25,14 @@ export default function SignIn() {
             style={{ marginTop: Constants.statusBarHeight }}
             className="flex-1 py-5 px-10 space-y-5"
         >
+            {/* Header */}
             <View className="my-6">
                 <Text className="text-white text-center font-bold text-3xl">
                     Welcome back!
                 </Text>
             </View>
+
+            {/* Form */}
             <View className="space-y-3">
                 <TextInput
                     placeholder="Email"
