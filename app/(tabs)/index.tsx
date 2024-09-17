@@ -1,8 +1,7 @@
-import Card from "@/components/Card";
-import app from "@/firebaseConfig";
+import { ScrollView, Text, View } from "react-native";
 import Constants from "expo-constants";
 import { getAuth } from "firebase/auth";
-import { Button, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import Card from "@/components/Card";
 
 export default function Index() {
     const signOut = async () => {
@@ -12,8 +11,6 @@ export default function Index() {
             console.log(e);
         }
     };
-
-    const user = getAuth(app).currentUser;
 
     return (
         <View

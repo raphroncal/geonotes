@@ -1,7 +1,7 @@
-import Card from "@/components/Card";
 import { useRef, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
-import MapView, { MapMarker, Marker, Region } from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
+import Card from "@/components/Card";
 
 export default function Map() {
     const mapRef = useRef<MapView>(null);

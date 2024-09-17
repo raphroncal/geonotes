@@ -1,7 +1,7 @@
-import app from "@/firebaseConfig";
-import { Redirect, Stack, Tabs } from "expo-router";
-import { getAuth } from "firebase/auth";
+import { Redirect, Tabs } from "expo-router";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
+import { getAuth } from "firebase/auth";
+import app from "@/firebaseConfig";
 
 export default function RootLayout() {
     const user = getAuth(app).currentUser;
