@@ -35,7 +35,7 @@ export default function SignIn() {
                     placeholder="Email"
                     textContentType="emailAddress"
                     autoCapitalize="none"
-                    className="placeholder:text-slate-50 bg-white text-black h-10 rounded-sm px-3"
+                    className="bg-white text-black h-10 rounded-sm px-3"
                     onChangeText={setEmail}
                 />
                 <TextInput
@@ -43,7 +43,7 @@ export default function SignIn() {
                     textContentType="password"
                     secureTextEntry={true}
                     autoCapitalize="none"
-                    className="placeholder:text-slate-50 bg-white text-black h-10 px-3 rounded-sm mb-10"
+                    className="bg-white text-black h-10 px-3 rounded-sm mb-10"
                     onChangeText={setPassword}
                 />
             </View>
