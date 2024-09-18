@@ -3,25 +3,44 @@ import { Image } from "expo-image";
 import { Link, router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NoteProps } from "@/app/notes/[note]";
+import { useState } from "react";
 
 type CardProps = {
     id: string;
 };
 
-const Card: React.FC<CardProps> = ({ id }) => {
-    const getNote = async (id: string) => {
-        try {
-            let jsonString = await AsyncStorage.getItem(id);
-            let jsonValue: NoteProps =
-                jsonString != null ? JSON.parse(jsonString) : null;
-            return jsonValue;
-        } catch (e) {
-            Alert.alert("Failed to load note. Please try again later.");
-            router.dismiss();
-        }
-    };
+export const getNote = async (
+    id: string,
+    setState: (value: NoteProps) => void
+) => {
+    try {
+        let jsonString = await AsyncStorage.getItem(id);
+        jsonString != null
+            ? setState(JSON.parse(jsonString) as NoteProps)
+            : null;
+    } catch (e) {
+        Alert.alert("Failed to load note. Please try again later.");
+        router.dismiss();
+    }
+};
 
-    let note = getNote(id);
+export const formatDate = (d: Date) => {
+    if (new Date().getDate() == d.getDate()) {
+        return d.toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+        });
+    }
+
+    return d.getDate();
+};
+
+const Card: React.FC<CardProps> = ({ id }) => {
+    const [note, setNote] = useState<NoteProps>();
+    // let note = getNote(id);
+    // let temp: NoteProps = structuredClone(note)
+    getNote(id, setNote);
+
     console.log(note);
     return (
         <Link
@@ -43,7 +62,9 @@ const Card: React.FC<CardProps> = ({ id }) => {
             >
                 {/* Title */}
                 <View className="flex flex-row justify-between items-center px-5">
-                    <Text className="text-xl text-white font-bold">{}</Text>
+                    <Text className="text-xl text-white font-bold">
+                        {note ? note.title : undefined}
+                    </Text>
 
                     <TouchableOpacity
                         onPress={() => {
@@ -57,12 +78,12 @@ const Card: React.FC<CardProps> = ({ id }) => {
                     </TouchableOpacity>
                 </View>
 
-                {/* Content */}
+                {/* Body */}
                 <Text className="text-gray-300 px-5">
-                    {/* {id.body ? id.body : "No text"} */}
+                    {note ? note.body : undefined}
                 </Text>
                 <Text className="px-5 text-gray-300 italic">
-                    {/* {id.date ? formatDate(id.date) : undefined} */}
+                    {note ? formatDate(note.date) : undefined}
                 </Text>
             </TouchableOpacity>
         </Link>

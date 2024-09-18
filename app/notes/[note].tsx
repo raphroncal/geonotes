@@ -1,12 +1,15 @@
 import { Text, View, TextInput, TouchableOpacity, Alert } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { Image } from "expo-image";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useState } from "react";
+import { formatDate, getNote } from "@/components/Card";
 
 export type NoteProps = {
-    coordinates?: Coordinates;
+    coordinates: Coordinates;
     title?: string;
     body?: string;
-    date?: Date;
+    date: Date;
     image?: any;
 };
 
@@ -15,20 +18,25 @@ type Coordinates = {
     latitude: number;
 };
 
-const Note: React.FC = () => {
-    const formatDate = (d: Date) => {
-        if (new Date().getDate() == d.getDate()) {
-            return d.toLocaleTimeString("en-US", {
-                hour: "2-digit",
-                minute: "2-digit",
-            });
-        }
+const saveNote = async (key: string, data: NoteProps) => {
+    const DEFAULT = 0.1;
 
-        return d.getDate();
-    };
+    try {
+        const jsonValue = JSON.stringify(data);
+        await AsyncStorage.setItem(key, jsonValue);
+    } catch (e) {
+        // save error
+    }
+};
 
-    const note: NoteProps = useLocalSearchParams();
+const Note = () => {
+    const [note, setNote] = useState<NoteProps>();
+    const [title, setTitle] = useState("");
+    const [body, setBody] = useState("");
+    const { id } = useLocalSearchParams<{ id: string }>();
     const router = useRouter();
+
+    getNote(id, setNote);
 
     return (
         <View className="pt-12 px-5 space-y-5">
@@ -44,7 +52,16 @@ const Note: React.FC = () => {
                         source={require("@/assets/images/back.png")}
                     ></Image>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => {}}>
+                <TouchableOpacity
+                    onPress={() => {
+                        saveNote(id, {
+                            coordinates: note ? note.coordinates : undefined,
+                            title: title,
+                            body: body,
+                            date: new Date(),
+                        } as NoteProps);
+                    }}
+                >
                     <Image
                         className="w-5 h-6"
                         source={require("@/assets/images/check.png")}
@@ -58,11 +75,12 @@ const Note: React.FC = () => {
                     placeholder="Title"
                     placeholderTextColor="#3f3f46"
                     className="text-white text-2xl font-medium h-10 rounded-sm"
+                    onChangeText={setTitle}
                 >
-                    {note.title}
+                    {note ? note.title : undefined}
                 </TextInput>
                 <Text className="text-zinc-700 italic">
-                    {note.date ? formatDate(note.date) : formatDate(new Date())}
+                    {note ? formatDate(note.date) : formatDate(new Date())}
                 </Text>
             </View>
 
@@ -72,8 +90,9 @@ const Note: React.FC = () => {
                     placeholder="Type here"
                     placeholderTextColor="#3f3f46"
                     className="text-white font-medium h-10 rounded-sm"
+                    onChangeText={setBody}
                 >
-                    {note.body}
+                    {note ? note.body : undefined}
                 </TextInput>
             </View>
         </View>
