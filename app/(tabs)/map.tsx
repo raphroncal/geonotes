@@ -25,6 +25,12 @@ export default function Map() {
         title: "Note Title",
         date: new Date(),
         body: "test body",
+        coordinates: {
+            longitude: 121.02691688205952,
+            latitude: 14.540635977344408,
+            longitudeDelta: 0.01,
+            latitudeDelta: 0.01,
+        },
     };
     let testKeys = Object.keys(testData)[0];
 

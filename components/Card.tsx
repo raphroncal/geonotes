@@ -37,8 +37,6 @@ export const formatDate = (d: Date) => {
 
 const Card: React.FC<CardProps> = ({ id }) => {
     const [note, setNote] = useState<NoteProps>();
-    // let note = getNote(id);
-    // let temp: NoteProps = structuredClone(note)
     getNote(id, setNote);
 
     console.log(note);

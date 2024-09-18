@@ -11,13 +11,10 @@ type IndexProps = {
 };
 
 const Index: React.FC<IndexProps> = ({ notes, setNotes }) => {
-    // const { notes, setNotes } = route.params;
-
     useEffect(() => {
         async () => {
             try {
                 const keys = await AsyncStorage.getAllKeys();
-                // const tempKeys = await AsyncStorage.multiGet(keys);
                 let newKeys: string[] = [];
                 for (let i in keys) {
                     newKeys[i] = keys[i];

@@ -16,11 +16,11 @@ export type NoteProps = {
 type Coordinates = {
     longitude: number;
     latitude: number;
+    longitudeDelta: number;
+    latitudeDelta: number;
 };
 
 const saveNote = async (key: string, data: NoteProps) => {
-    const DEFAULT = 0.1;
-
     try {
         const jsonValue = JSON.stringify(data);
         await AsyncStorage.setItem(key, jsonValue);
@@ -37,7 +37,6 @@ const Note = () => {
     const router = useRouter();
 
     getNote(id, setNote);
-
     return (
         <View className="pt-12 px-5 space-y-5">
             {/* Header */}
